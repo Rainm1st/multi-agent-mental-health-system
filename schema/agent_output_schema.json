@@ -1,0 +1,10 @@
+{
+  "agent_type": "string",
+  "risk_score": 0.0,
+  "risk_level": "none | low | medium | high",
+  "evidence_signals": [
+    "string"
+  ],
+  "reasoning_summary": "string",
+  "confidence": 0.0
+}

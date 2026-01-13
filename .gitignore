@@ -1,0 +1,13 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment / secrets
+.env
+*.key
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
