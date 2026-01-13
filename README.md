@@ -7,7 +7,7 @@
 
 ---
 
-## English Version
+## <a id="english-version"></a>English Version
 
 ### Overview
 
@@ -164,6 +164,8 @@ This system is intended for research and educational use only.
 It does not provide medical or clinical diagnosis and must not be used for real-world mental health decision-making.
 
 # 多智能体心理风险评估系统
+## <a id="chinese-version"></a>中文版
+
 
 本项目实现了一套 **多智能体（Multi-Agent）心理风险评估系统**，  
 通过多个专职智能体从不同心理维度分析用户文本，并由协调器进行统一汇总与解释。
@@ -361,3 +363,4 @@ python runner/compare_results.py
 
 
 ---
+
