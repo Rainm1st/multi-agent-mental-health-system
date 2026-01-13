@@ -1,0 +1,126 @@
+[
+  {
+    "id": 1,
+    "text": "最近每天都觉得很空，对什么事情都提不起兴趣。",
+    "output": {
+      "overall_risk_level": "low",
+      "dominant_factors": [
+        "depression"
+      ],
+      "summary": "用户表达了对日常活动缺乏兴趣，这可能是抑郁情绪的迹象。",
+      "confidence": 0.7
+    }
+  },
+  {
+    "id": 2,
+    "text": "我总是担心未来会发生不好的事情，脑子停不下来。",
+    "output": {
+      "overall_risk_level": "medium",
+      "dominant_factors": [
+        "anxiety"
+      ],
+      "summary": "用户表达了对未来持续的担忧，这表明存在中等程度的心理风险。",
+      "confidence": 0.7
+    }
+  },
+  {
+    "id": 3,
+    "text": "工作任务太多了，感觉每天都被压得喘不过气。",
+    "output": {
+      "overall_risk_level": "low",
+      "dominant_factors": [
+        "stress"
+      ],
+      "summary": "用户表达了由于工作任务过多而感到压力大，但没有表现出严重的心理风险。",
+      "confidence": 0.8
+    }
+  },
+  {
+    "id": 4,
+    "text": "身边有很多人，但我感觉没有一个人真正理解我。",
+    "output": {
+      "overall_risk_level": "low",
+      "dominant_factors": [
+        "loneliness"
+      ],
+      "summary": "用户表达了感到孤独的情绪，尽管周围有很多人，但感觉没有被真正理解。",
+      "confidence": 0.8
+    }
+  },
+  {
+    "id": 5,
+    "text": "我既觉得很空，又经常一个人胡思乱想未来的事情。",
+    "output": {
+      "overall_risk_level": "low",
+      "dominant_factors": [
+        "loneliness",
+        "anxiety"
+      ],
+      "summary": "用户表达了感到空虚和对未来事情的担忧，这可能指向孤独感和焦虑情绪的存在。",
+      "confidence": 0.7
+    }
+  },
+  {
+    "id": 6,
+    "text": "每天要应付太多事情，没人可以倾诉，真的很累。",
+    "output": {
+      "overall_risk_level": "medium",
+      "dominant_factors": [
+        "stress",
+        "loneliness"
+      ],
+      "summary": "用户表达了因日常压力感到疲惫，并且缺乏社交支持，这可能增加心理负担。",
+      "confidence": 0.75
+    }
+  },
+  {
+    "id": 7,
+    "text": "我对很多事情都没什么感觉，同时也觉得很焦虑。",
+    "output": {
+      "overall_risk_level": "medium",
+      "dominant_factors": [
+        "depression",
+        "anxiety"
+      ],
+      "summary": "用户表达了对许多事情缺乏情感反应，同时感到焦虑，这可能指示了抑郁和焦虑的迹象。",
+      "confidence": 0.8
+    }
+  },
+  {
+    "id": 8,
+    "text": "最近压力特别大，晚上一个人待着的时候会觉得很孤独。",
+    "output": {
+      "overall_risk_level": "low",
+      "dominant_factors": [
+        "stress",
+        "loneliness"
+      ],
+      "summary": "用户报告了高水平的压力和孤独感，特别是在晚上独自一人时。这表明可能存在轻微的心理健康风险。",
+      "confidence": 0.7
+    }
+  },
+  {
+    "id": 9,
+    "text": "一切看起来都很正常，但我就是觉得心里空落落的。",
+    "output": {
+      "overall_risk_level": "low",
+      "dominant_factors": [
+        "loneliness"
+      ],
+      "summary": "用户表达了感到心里空落落的情绪，这可能指向一定程度的孤独感。",
+      "confidence": 0.7
+    }
+  },
+  {
+    "id": 10,
+    "text": "我不确定是不是哪里出了问题，但最近情绪一直很低落。",
+    "output": {
+      "overall_risk_level": "low",
+      "dominant_factors": [
+        "depression"
+      ],
+      "summary": "用户表达了近期情绪低落，这可能是抑郁情绪的表现。不过，没有提到具体的严重症状或行为改变，因此风险水平较低。",
+      "confidence": 0.7
+    }
+  }
+]

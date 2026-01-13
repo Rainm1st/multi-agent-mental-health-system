@@ -1,0 +1,528 @@
+[
+  {
+    "id": 1,
+    "text": "最近每天都觉得很空，对什么事情都提不起兴趣。",
+    "agent_outputs": {
+      "depression": {
+        "agent_type": "depression",
+        "risk_score": 0.75,
+        "risk_level": "high",
+        "evidence_signals": [
+          "持续感到空虚",
+          "对事情提不起兴趣"
+        ],
+        "reasoning_summary": "用户表达了持续的空虚感和对日常活动失去兴趣，这是抑郁状态的核心信号。",
+        "confidence": 0.85
+      },
+      "anxiety": {
+        "agent_type": "anxiety",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户表达的是情绪低落和兴趣缺失，属于抑郁相关症状，不在焦虑分析范围内。",
+        "confidence": 1.0
+      },
+      "stress": {
+        "agent_type": "stress",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户表达的是情绪低落和兴趣减退，属于情感障碍相关信号，不在当前压力类别的分析范围内。",
+        "confidence": 1.0
+      },
+      "loneliness": {
+        "agent_type": "loneliness",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户表达了情绪低落和兴趣减退，但未提及与他人连接、社交关系或情感支持相关的体验，因此不构成孤独感信号。",
+        "confidence": 0.95
+      }
+    },
+    "final_output": {
+      "overall_risk_level": "high",
+      "dominant_factors": [
+        "depression"
+      ],
+      "summary": "用户表现出明显的抑郁症状，包括持续感到空虚和对事情提不起兴趣。其他心理风险因素如焦虑、压力和孤独感未被检测到。",
+      "confidence": 0.85
+    }
+  },
+  {
+    "id": 2,
+    "text": "我总是担心未来会发生不好的事情，脑子停不下来。",
+    "agent_outputs": {
+      "depression": {
+        "agent_type": "depression",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户表达的是对未来的担忧和思维停不下来，属于焦虑相关体验，不在抑郁信号范围内。",
+        "confidence": 0.95
+      },
+      "anxiety": {
+        "agent_type": "anxiety",
+        "risk_score": 0.85,
+        "risk_level": "high",
+        "evidence_signals": [
+          "过度担忧未来",
+          "无法停止思考",
+          "预期负面结果"
+        ],
+        "reasoning_summary": "用户表达了对未来的持续性担忧和思维反刍，表现出典型的焦虑认知模式。",
+        "confidence": 0.95
+      },
+      "stress": {
+        "agent_type": "stress",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户表达的是对未来的担忧和持续的思维活动，属于焦虑相关表现，但未提及由外部任务、责任或时间压力引起的具体压力源，因此不在当前压力分析范围内。",
+        "confidence": 0.95
+      },
+      "loneliness": {
+        "agent_type": "loneliness",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户表达的是对未来的担忧和思维停不下来，这属于焦虑相关的表现，不在本代理的孤独感分析范围内。",
+        "confidence": 1.0
+      }
+    },
+    "final_output": {
+      "overall_risk_level": "high",
+      "dominant_factors": [
+        "anxiety"
+      ],
+      "summary": "用户表现出对未来的持续担忧和思维反刍，这是典型的焦虑症状。其他心理风险因素如抑郁、压力和孤独感在当前评估中未见明显迹象。",
+      "confidence": 0.95
+    }
+  },
+  {
+    "id": 3,
+    "text": "工作任务太多了，感觉每天都被压得喘不过气。",
+    "agent_outputs": {
+      "depression": {
+        "agent_type": "depression",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户表达了工作压力大和窒息感，但未表现出抑郁核心症状如持续低落、无望感、无价值感或兴趣丧失。",
+        "confidence": 0.95
+      },
+      "anxiety": {
+        "agent_type": "anxiety",
+        "risk_score": 0.85,
+        "risk_level": "high",
+        "evidence_signals": [
+          "feeling overwhelmed by workload",
+          "sense of being suffocated or unable to breathe metaphorically",
+          "daily pressure indicating persistent stress"
+        ],
+        "reasoning_summary": "The user expresses intense and ongoing pressure from工作任务, using language that suggests a heightened state of nervous tension and inability to cope, which aligns with anxiety-related cognition.",
+        "confidence": 0.9
+      },
+      "stress": {
+        "agent_type": "stress",
+        "risk_score": 0.85,
+        "risk_level": "high",
+        "evidence_signals": [
+          "工作任务太多",
+          "每天被压得喘不过气"
+        ],
+        "reasoning_summary": "用户明确表达了工作负担过重和持续的压迫感，符合高强度外部压力的表现。",
+        "confidence": 0.95
+      },
+      "loneliness": {
+        "agent_type": "loneliness",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户提到工作压力大，但未表达与他人情感连接缺失或社会孤立的感受。",
+        "confidence": 0.95
+      }
+    },
+    "final_output": {
+      "overall_risk_level": "high",
+      "dominant_factors": [
+        "anxiety",
+        "stress"
+      ],
+      "summary": "The user is experiencing high levels of anxiety and stress, primarily due to overwhelming work pressure and a sense of being suffocated by daily tasks. There are no significant signs of depression or loneliness.",
+      "confidence": 0.92
+    }
+  },
+  {
+    "id": 4,
+    "text": "身边有很多人，但我感觉没有一个人真正理解我。",
+    "agent_outputs": {
+      "depression": {
+        "agent_type": "depression",
+        "risk_score": 0.65,
+        "risk_level": "medium",
+        "evidence_signals": [
+          "emotional emptiness",
+          "feeling misunderstood",
+          "sense of isolation despite social presence"
+        ],
+        "reasoning_summary": "The statement reflects a deep sense of emotional disconnection and loneliness, even in the presence of others, which aligns with depressive feelings of isolation and emotional numbness.",
+        "confidence": 0.8
+      },
+      "anxiety": {
+        "agent_type": "anxiety",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "该陈述主要表达情感孤独和缺乏理解，属于情绪低落或抑郁相关信号，不在焦虑分析范围内。",
+        "confidence": 0.95
+      },
+      "stress": {
+        "agent_type": "stress",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户表达的是情感上的不被理解，属于社交或情感需求范畴，未涉及外部压力、任务负荷或时间紧迫等压力源。",
+        "confidence": 1.0
+      },
+      "loneliness": {
+        "agent_type": "loneliness",
+        "risk_score": 0.75,
+        "risk_level": "high",
+        "evidence_signals": [
+          "feeling misunderstood",
+          "emotional disconnection despite social presence",
+          "sense of being unseen"
+        ],
+        "reasoning_summary": "The user reports being surrounded by people but feels no one truly understands them, indicating deep emotional loneliness and perceived lack of meaningful connection.",
+        "confidence": 0.9
+      }
+    },
+    "final_output": {
+      "overall_risk_level": "high",
+      "dominant_factors": [
+        "depression",
+        "loneliness"
+      ],
+      "summary": "The user is experiencing a high level of loneliness and a medium level of depression, with significant emotional disconnection and a sense of being misunderstood despite social presence.",
+      "confidence": 0.9
+    }
+  },
+  {
+    "id": 5,
+    "text": "我既觉得很空，又经常一个人胡思乱想未来的事情。",
+    "agent_outputs": {
+      "depression": {
+        "agent_type": "depression",
+        "risk_score": 0.4,
+        "risk_level": "low",
+        "evidence_signals": [
+          "感到空虚"
+        ],
+        "reasoning_summary": "用户提到'觉得很空'，这可能反映情感麻木或内心空虚，是轻度抑郁的潜在信号；但关于'胡思乱想未来的事情'属于对未来焦虑的范畴，不在本代理分析范围内。",
+        "confidence": 0.75
+      },
+      "anxiety": {
+        "agent_type": "anxiety",
+        "risk_score": 0.65,
+        "risk_level": "medium",
+        "evidence_signals": [
+          "胡思乱想未来的事情",
+          "对未来的非特异性担忧"
+        ],
+        "reasoning_summary": "用户提到经常性地思考未来，且带有模糊的忧虑色彩，符合焦虑相关的前瞻性思维模式。",
+        "confidence": 0.8
+      },
+      "stress": {
+        "agent_type": "stress",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户表达的是内心的空虚感和对未来的思考，但未提及与外部压力、任务负荷、时间紧迫或责任负担相关的具体压力源。这些内容属于情绪或存在性困扰，不在本代理的应激压力分析范围内。",
+        "confidence": 1.0
+      },
+      "loneliness": {
+        "agent_type": "loneliness",
+        "risk_score": 0.65,
+        "risk_level": "medium",
+        "evidence_signals": [
+          "感觉很空",
+          "经常一个人胡思乱想"
+        ],
+        "reasoning_summary": "用户表达了内在的空虚感和独自沉思的状态，这可能反映情感上的孤独或缺乏连接感。",
+        "confidence": 0.8
+      }
+    },
+    "final_output": {
+      "overall_risk_level": "medium",
+      "dominant_factors": [
+        "anxiety",
+        "loneliness"
+      ],
+      "summary": "用户表现出中等程度的焦虑和孤独感，主要体现在对未来非特异性的担忧以及情感上的空虚和缺乏连接感。",
+      "confidence": 0.8
+    }
+  },
+  {
+    "id": 6,
+    "text": "每天要应付太多事情，没人可以倾诉，真的很累。",
+    "agent_outputs": {
+      "depression": {
+        "agent_type": "depression",
+        "risk_score": 0.65,
+        "risk_level": "medium",
+        "evidence_signals": [
+          "持续感到疲惫（'真的很累'）",
+          "缺乏情感支持（'没人可以倾诉'）"
+        ],
+        "reasoning_summary": "用户表达了长期的情绪耗竭和社交孤立感，这些是中度抑郁的常见信号，但未明确提及自我评价降低或情绪麻木等核心症状。",
+        "confidence": 0.75
+      },
+      "anxiety": {
+        "agent_type": "anxiety",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户表达了疲惫和缺乏倾诉对象的感受，但未表现出与焦虑相关的过度担忧、紧张或恐惧等典型认知或情绪信号。",
+        "confidence": 0.95
+      },
+      "stress": {
+        "agent_type": "stress",
+        "risk_score": 0.8,
+        "risk_level": "high",
+        "evidence_signals": [
+          "feeling overwhelmed by tasks",
+          "high workload perception",
+          "lack of social support for coping"
+        ],
+        "reasoning_summary": "用户明确表达每天需应付大量事务，并感到疲惫，同时缺乏倾诉对象，表明面临较高外部压力且无有效情绪释放途径。",
+        "confidence": 0.9
+      },
+      "loneliness": {
+        "agent_type": "loneliness",
+        "risk_score": 0.85,
+        "risk_level": "high",
+        "evidence_signals": [
+          "没人可以倾诉",
+          "每天要应付太多事情",
+          "真的很累"
+        ],
+        "reasoning_summary": "用户表达了缺乏情感支持和倾诉对象，同时感到身心俱疲，显示出明显的社交孤立感和情感孤独。",
+        "confidence": 0.9
+      }
+    },
+    "final_output": {
+      "overall_risk_level": "high",
+      "dominant_factors": [
+        "stress",
+        "loneliness"
+      ],
+      "summary": "用户面临高压力和孤独感，表现为感到疲惫、缺乏情感支持和社交孤立。",
+      "confidence": 0.85
+    }
+  },
+  {
+    "id": 7,
+    "text": "我对很多事情都没什么感觉，同时也觉得很焦虑。",
+    "agent_outputs": {
+      "depression": {
+        "agent_type": "depression",
+        "risk_score": 0.4,
+        "risk_level": "medium",
+        "evidence_signals": [
+          "对很多事情都没什么感觉"
+        ],
+        "reasoning_summary": "用户提到情感麻木，这是抑郁的常见信号之一；但焦虑情绪本身不在本代理分析范围内。",
+        "confidence": 0.75
+      },
+      "anxiety": {
+        "agent_type": "anxiety",
+        "risk_score": 0.65,
+        "risk_level": "medium",
+        "evidence_signals": [
+          "表达焦虑情绪",
+          "情感麻木与焦虑并存的描述"
+        ],
+        "reasoning_summary": "用户明确提到‘觉得很焦虑’，同时描述情感麻木，焦虑信号显著但未涉及具体担忧内容，因此评估为中等风险。",
+        "confidence": 0.85
+      },
+      "stress": {
+        "agent_type": "stress",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户提到焦虑，但未明确与外部压力源（如工作、学业、责任负担）相关联；情感麻木可能指向情绪障碍，超出本代理的分析范围。",
+        "confidence": 0.6
+      },
+      "loneliness": {
+        "agent_type": "loneliness",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户提到缺乏情感反应和焦虑，但未表达与孤独感相关的社会或情感隔离信号。",
+        "confidence": 0.95
+      }
+    },
+    "final_output": {
+      "overall_risk_level": "medium",
+      "dominant_factors": [
+        "depression",
+        "anxiety"
+      ],
+      "summary": "用户表现出中等程度的抑郁和焦虑信号，情感麻木和明确提到的焦虑情绪是主要风险因素。没有明显的压力或孤独感。",
+      "confidence": 0.8
+    }
+  },
+  {
+    "id": 8,
+    "text": "最近压力特别大，晚上一个人待着的时候会觉得很孤独。",
+    "agent_outputs": {
+      "depression": {
+        "agent_type": "depression",
+        "risk_score": 0.3,
+        "risk_level": "low",
+        "evidence_signals": [
+          "感到孤独"
+        ],
+        "reasoning_summary": "用户提到晚上独处时感到孤独，这可能指向情感上的空虚或连接缺失，但未表现出典型的抑郁核心症状如持续低落、无价值感或兴趣丧失。",
+        "confidence": 0.75
+      },
+      "anxiety": {
+        "agent_type": "anxiety",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户提到压力大和孤独感，但这些属于外部压力和情感孤独范畴，不在本代理的焦虑信号分析范围内。",
+        "confidence": 1.0
+      },
+      "stress": {
+        "agent_type": "stress",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户提到压力大和孤独感，但孤独属于社交情感范畴，不在当前压力代理的分析范围内；未明确提及工作、学业、时间压力或任务超载等外部压力源。",
+        "confidence": 0.95
+      },
+      "loneliness": {
+        "agent_type": "loneliness",
+        "risk_score": 0.65,
+        "risk_level": "medium",
+        "evidence_signals": [
+          "提到晚上一个人待着",
+          "表达孤独感",
+          "孤独情绪在独处时加剧"
+        ],
+        "reasoning_summary": "用户在压力大的背景下，明确表达了独处时的孤独感受，显示出情感上的孤立信号。",
+        "confidence": 0.85
+      }
+    },
+    "final_output": {
+      "overall_risk_level": "medium",
+      "dominant_factors": [
+        "loneliness"
+      ],
+      "summary": "用户主要表现出中等程度的孤独感，尤其是在独处时。虽然有一些低风险的抑郁信号，但整体评估显示孤独是主要的心理风险因素。",
+      "confidence": 0.85
+    }
+  },
+  {
+    "id": 9,
+    "text": "一切看起来都很正常，但我就是觉得心里空落落的。",
+    "agent_outputs": {
+      "depression": {
+        "agent_type": "depression",
+        "risk_score": 0.65,
+        "risk_level": "medium",
+        "evidence_signals": [
+          "心里空落落的",
+          "情感上的空虚感"
+        ],
+        "reasoning_summary": "用户描述了在外部情况正常的情况下仍感到内心空虚，这符合抑郁中的情感麻木或空虚表现。",
+        "confidence": 0.8
+      },
+      "anxiety": {
+        "agent_type": "anxiety",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户描述‘心里空落落的’更倾向于情绪低落或空虚感，未表现出焦虑相关的过度担忧、紧张或对未来的恐惧等典型信号。",
+        "confidence": 0.95
+      },
+      "stress": {
+        "agent_type": "stress",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户表达的是内心空落落的感受，但未提及与外部压力、任务负荷、时间紧迫或责任负担相关的具体压力源。该体验更偏向情感层面的空虚感，不属于本代理专注的应激范畴。",
+        "confidence": 0.95
+      },
+      "loneliness": {
+        "agent_type": "loneliness",
+        "risk_score": 0.65,
+        "risk_level": "medium",
+        "evidence_signals": [
+          "表达内心空虚感",
+          "表面正常但情感上感到缺失"
+        ],
+        "reasoning_summary": "用户描述外在状态正常，但主观体验到内心的空落感，这可能反映情感上的孤独或与他人缺乏深层连接。",
+        "confidence": 0.8
+      }
+    },
+    "final_output": {
+      "overall_risk_level": "medium",
+      "dominant_factors": [
+        "depression",
+        "loneliness"
+      ],
+      "summary": "用户表现出中等程度的抑郁和孤独感，主要表现为内心空落落的情感体验。",
+      "confidence": 0.8
+    }
+  },
+  {
+    "id": 10,
+    "text": "我不确定是不是哪里出了问题，但最近情绪一直很低落。",
+    "agent_outputs": {
+      "depression": {
+        "agent_type": "depression",
+        "risk_score": 0.65,
+        "risk_level": "medium",
+        "evidence_signals": [
+          "情绪一直很低落"
+        ],
+        "reasoning_summary": "用户提到持续的情绪低落，这是抑郁的典型信号之一。",
+        "confidence": 0.85
+      },
+      "anxiety": {
+        "agent_type": "anxiety",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户提到情绪低落，但未表现出焦虑相关的过度担忧、紧张或对未来的恐惧等典型信号。",
+        "confidence": 0.95
+      },
+      "stress": {
+        "agent_type": "stress",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户提到情绪低落，但未提及与外部压力、任务负担、时间压力或责任相关的具体压力源。",
+        "confidence": 0.95
+      },
+      "loneliness": {
+        "agent_type": "loneliness",
+        "risk_score": 0.0,
+        "risk_level": "none",
+        "evidence_signals": [],
+        "reasoning_summary": "用户提到情绪低落，但未表达与孤独感相关的信号，如社交隔离、缺乏支持或情感连接缺失。",
+        "confidence": 0.95
+      }
+    },
+    "final_output": {
+      "overall_risk_level": "medium",
+      "dominant_factors": [
+        "depression"
+      ],
+      "summary": "用户表现出中等程度的抑郁风险，但没有明显的焦虑、压力或孤独感。",
+      "confidence": 0.85
+    }
+  }
+]
