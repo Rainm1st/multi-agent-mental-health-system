@@ -23,3 +23,6 @@ frontend/dist
 
 # Frontend dependencies
 frontend/node_modules/
+
+# Vite cache
+frontend/.vite/
