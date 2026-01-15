@@ -1,53 +1,71 @@
+import os
 import json
 from pathlib import Path
+from dotenv import load_dotenv
 from openai import OpenAI
 
-# ==============================
-# 配置区（你只需要改这两行）
-# ==============================
+# Load environment variables from .env file
+load_dotenv()
 
-AGENT_FILE = "agents/loneliness_agent.md"
-USER_INPUT = "最近每天都觉得很空，对什么都提不起兴趣。"
-
-# ==============================
-# 初始化 Client（不写 key）
-# ==============================
+# ================== Configuration ==================
+BASELINE_MODEL = "qwen-max"  # Same model as coordinator
+BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+OUTPUT_FILE = "results/single_model_results.json"
+# ===================================================
 
 client = OpenAI(
-    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"
+    api_key=os.getenv("DASHSCOPE_API_KEY"),
+    base_url=BASE_URL
 )
 
-# ==============================
-# 读取 Agent Prompt
-# ==============================
+# Load coordinator rules to enforce identical output schema
+COORDINATOR_RULES = Path(
+    "coordinator/coordinator_rules.md"
+).read_text(encoding="utf-8")
 
-agent_prompt = Path(AGENT_FILE).read_text(encoding="utf-8")
-
-messages = [
-    {"role": "system", "content": agent_prompt},
-    {"role": "user", "content": USER_INPUT}
-]
-
-# ==============================
-# 调用 qwen3
-# ==============================
-
-response = client.chat.completions.create(
-    model="qwen-plus",
-    messages=messages,
-    temperature=0,
-    response_format={"type": "json_object"}
+INPUTS = json.loads(
+    Path("tests/eval_inputs.json").read_text(encoding="utf-8")
 )
 
 
-content = response.choices[0].message.content
+def run_single_model(text):
+    """
+    Single-model baseline:
+    Use the same coordinator prompt, but without agent decomposition.
+    """
+    response = client.chat.completions.create(
+        model=BASELINE_MODEL,
+        messages=[
+            {"role": "system", "content": COORDINATOR_RULES},
+            {"role": "user", "content": text}
+        ],
+        temperature=0,
+        response_format={"type": "json_object"},
+        # Disable thinking mode for non-streaming structured output
+        extra_body={"enable_thinking": False}
+    )
+    return json.loads(response.choices[0].message.content)
 
-print("\n========== RAW OUTPUT ==========")
-print(content)
 
-print("\n========== PARSED JSON ==========")
-try:
-    parsed = json.loads(content)
-    print(json.dumps(parsed, indent=2, ensure_ascii=False))
-except Exception as e:
-    print("JSON 解析失败：", e)
+def main():
+    results = []
+
+    for item in INPUTS:
+        final_output = run_single_model(item["text"])
+        results.append({
+            "id": item["id"],
+            "text": item["text"],
+            "final_output": final_output
+        })
+
+    Path("results").mkdir(exist_ok=True)
+    Path(OUTPUT_FILE).write_text(
+        json.dumps(results, indent=2, ensure_ascii=False),
+        encoding="utf-8"
+    )
+
+    print("[OK] Standardized single-model results saved to", OUTPUT_FILE)
+
+
+if __name__ == "__main__":
+    main()

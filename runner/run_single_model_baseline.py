@@ -1,73 +1,50 @@
+import os
 import json
 from pathlib import Path
+from dotenv import load_dotenv
 from openai import OpenAI
 
-# ======================
-# 配置
-# ======================
+# Load environment variables from .env file
+load_dotenv()
 
-MODEL = "qwen-max"
-INPUT_FILE = "tests/eval_inputs.json"
+
+# ================== 配置区 ==================
+BASELINE_MODEL = "qwen3-max"
+BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 OUTPUT_FILE = "results/single_model_results.json"
-
-SYSTEM_PROMPT = """
-You are a single-model mental health risk assessment system.
-
-Your task:
-- Assess overall psychological risk from the given user text.
-- Do NOT perform clinical diagnosis.
-- Provide a high-level risk assessment.
-
-You must output a JSON object with EXACTLY the following fields:
-
-{
-  "overall_risk_level": "none" | "low" | "medium" | "high",
-  "dominant_factors": array of strings chosen from ["depression", "anxiety", "stress", "loneliness"],
-  "summary": short string explaining the assessment,
-  "confidence": number between 0 and 1
-}
-
-Rules:
-- All fields are REQUIRED.
-- Do NOT add extra fields.
-- The output must be valid JSON.
-"""
-
-# ======================
-# 初始化
-# ======================
+# ============================================
 
 client = OpenAI(
-    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"
+    api_key=os.getenv("DASHSCOPE_API_KEY"),
+    base_url=BASE_URL
 )
 
-# ======================
-# 主逻辑
-# ======================
+
+SYSTEM_PROMPT = """
+You are a mental health assessment system.
+Analyze the user's text and output a JSON assessment.
+"""
+
+INPUTS = json.loads(Path("tests/eval_inputs.json").read_text(encoding="utf-8"))
 
 def main():
-    inputs = json.loads(Path(INPUT_FILE).read_text(encoding="utf-8"))
     results = []
 
-    for item in inputs:
-        messages = [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": item["text"]},
-        ]
-
+    for item in INPUTS:
         response = client.chat.completions.create(
-            model=MODEL,
-            messages=messages,
+            model=BASELINE_MODEL,
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": item["text"]}
+            ],
             temperature=0,
-            response_format={"type": "json_object"},
+            response_format={"type": "json_object"}
         )
-
-        output = json.loads(response.choices[0].message.content)
 
         results.append({
             "id": item["id"],
             "text": item["text"],
-            "output": output
+            "final_output": json.loads(response.choices[0].message.content)
         })
 
     Path("results").mkdir(exist_ok=True)
@@ -76,7 +53,16 @@ def main():
         encoding="utf-8"
     )
 
-    print(f"Baseline results saved to {OUTPUT_FILE}")
+    print(f"[OK] Single-model results saved to {OUTPUT_FILE}")
+
+    response = client.chat.completions.create(
+    model=BASELINE_MODEL,
+    messages=[...],
+    temperature=0,
+    response_format={"type": "json_object"},
+    extra_body={"enable_thinking": False}
+    )
+
 
 if __name__ == "__main__":
     main()

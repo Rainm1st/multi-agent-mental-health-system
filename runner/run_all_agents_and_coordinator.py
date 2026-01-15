@@ -1,95 +1,91 @@
+import os
 import json
 from pathlib import Path
+from dotenv import load_dotenv
 from openai import OpenAI
 
-# ======================
-# 基本配置
-# ======================
+# Load environment variables from .env file
+load_dotenv()
 
-USER_INPUT = "最近压力特别大，晚上一个人待着的时候会觉得很孤独。"
 
-AGENTS = {
-    "depression": "agents/depression_agent.md",
-    "anxiety": "agents/anxiety_agent.md",
-    "stress": "agents/stress_agent.md",
-    "loneliness": "agents/loneliness_agent.md",
-}
-
-AGENT_MODEL = "qwen-plus"
-COORDINATOR_MODEL = "qwen-max"
-
-# ======================
-# 初始化 Client
-# ======================
+# ================== 配置区 ==================
+AGENT_MODEL = "qwen3-8b"        # ← Agent 用这个
+COORDINATOR_MODEL = "qwen3-max" # ← Coordinator 用这个
+BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+OUTPUT_FILE = "results/multi_agent_results.json"
+# ============================================
 
 client = OpenAI(
-    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"
+    api_key=os.getenv("DASHSCOPE_API_KEY"),
+    base_url=BASE_URL
 )
 
-# ======================
-# 跑单个 Agent
-# ======================
 
-def run_agent(agent_type, agent_file, user_input):
-    prompt = Path(agent_file).read_text(encoding="utf-8")
-    messages = [
-        {"role": "system", "content": prompt},
-        {"role": "user", "content": user_input},
-    ]
+AGENTS = {
+    "depression": Path("agents/depression_agent.md").read_text(encoding="utf-8"),
+    "anxiety": Path("agents/anxiety_agent.md").read_text(encoding="utf-8"),
+    "stress": Path("agents/stress_agent.md").read_text(encoding="utf-8"),
+    "loneliness": Path("agents/loneliness_agent.md").read_text(encoding="utf-8"),
+}
 
+COORDINATOR_RULES = Path("coordinator/coordinator_rules.md").read_text(encoding="utf-8")
+INPUTS = json.loads(Path("tests/eval_inputs.json").read_text(encoding="utf-8"))
+
+def run_agent(prompt, text):
     response = client.chat.completions.create(
         model=AGENT_MODEL,
-        messages=messages,
+        messages=[
+            {"role": "system", "content": prompt},
+            {"role": "user", "content": text}
+        ],
         temperature=0,
         response_format={"type": "json_object"},
+        # Disable thinking mode for non-streaming structured output
+        extra_body={"enable_thinking": False}
     )
-
     return json.loads(response.choices[0].message.content)
 
-# ======================
-# 跑 Coordinator
-# ======================
 
 def run_coordinator(agent_outputs):
-    coordinator_prompt = Path(
-        "coordinator/coordinator_rules.md"
-    ).read_text(encoding="utf-8")
-
-    messages = [
-        {"role": "system", "content": coordinator_prompt},
-        {
-            "role": "user",
-            "content": json.dumps(agent_outputs, ensure_ascii=False),
-        },
-    ]
-
     response = client.chat.completions.create(
         model=COORDINATOR_MODEL,
-        messages=messages,
+        messages=[
+            {"role": "system", "content": COORDINATOR_RULES},
+            {"role": "user", "content": json.dumps(agent_outputs, ensure_ascii=False)}
+        ],
         temperature=0,
         response_format={"type": "json_object"},
+        # Disable thinking mode for non-streaming structured output
+        extra_body={"enable_thinking": False}
     )
-
     return json.loads(response.choices[0].message.content)
 
-# ======================
-# 主流程
-# ======================
+
+def main():
+    results = []
+
+    for item in INPUTS:
+        agent_results = {}
+
+        for agent_type, prompt in AGENTS.items():
+            agent_results[agent_type] = run_agent(prompt, item["text"])
+
+        final_output = run_coordinator(agent_results)
+
+        results.append({
+            "id": item["id"],
+            "text": item["text"],
+            "agent_outputs": agent_results,
+            "final_output": final_output
+        })
+
+    Path("results").mkdir(exist_ok=True)
+    Path(OUTPUT_FILE).write_text(
+        json.dumps(results, indent=2, ensure_ascii=False),
+        encoding="utf-8"
+    )
+
+    print(f"[OK] Multi-agent results saved to {OUTPUT_FILE}")
 
 if __name__ == "__main__":
-    agent_results = {}
-
-    print("Running agents...\n")
-
-    for agent_type, agent_file in AGENTS.items():
-        result = run_agent(agent_type, agent_file, USER_INPUT)
-        agent_results[agent_type] = result
-        print(f"[{agent_type.upper()}]")
-        print(json.dumps(result, indent=2, ensure_ascii=False))
-        print()
-
-    print("Running coordinator...\n")
-
-    final_result = run_coordinator(agent_results)
-    print("[FINAL COORDINATOR OUTPUT]")
-    print(json.dumps(final_result, indent=2, ensure_ascii=False))
+    main()
