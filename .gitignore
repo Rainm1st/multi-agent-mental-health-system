@@ -20,3 +20,6 @@ frontend/dist
 
 # environment
 .env
+
+# Frontend dependencies
+frontend/node_modules/
