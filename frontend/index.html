@@ -1,12 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Mental Multi-Agent System</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mental Health Assistant</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="chat-header">
+      <div class="header-info">
+        <h1>心理健康助手</h1>
+        <p class="subtitle">Your Mental Health Companion</p>
+      </div>
+      <button id="endBtn" class="end-btn" onclick="endConversation()">
+        <span class="btn-text">结束对话 & 生成报告</span>
+      </button>
+    </header>
+
+    <!-- Chat Area -->
+    <div id="chatContainer" class="chat-container">
+      <div class="welcome-message">
+        <p>你好！我是你的心理健康助手。</p>
+        <p>我们可以聊聊你的近况、心情或者任何你想分享的事情。</p>
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="input-container">
+      <div class="input-wrapper">
+        <textarea 
+          id="userInput" 
+          placeholder="在这里输入你的想法..." 
+          rows="1"
+          oninput="autoResize(this)"
+        ></textarea>
+        <button id="sendBtn" onclick="sendMessage()">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report Modal (Hidden by default) -->
+  <div id="reportModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>分析报告</h2>
+        <button class="close-btn" onclick="closeReport()">×</button>
+      </div>
+      <div id="reportContent" class="report-body">
+        <!-- Content injected by JS -->
+        <div class="loading-spinner"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="restart-btn" onclick="restartChat()">开始新对话</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
 </html>

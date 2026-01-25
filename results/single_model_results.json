@@ -19,7 +19,7 @@
       "dominant_factors": [
         "anxiety"
       ],
-      "summary": "中等程度的风险，主要因素是焦虑。",
+      "summary": "存在中等程度的焦虑情绪，主要表现为对未来持续的担忧。",
       "confidence": 0.85
     }
   },
@@ -31,7 +31,7 @@
       "dominant_factors": [
         "stress"
       ],
-      "summary": "The individual is experiencing a moderate level of stress, likely due to overwhelming work tasks. Other factors such as depression, anxiety, and loneliness do not seem to be significant at this time.",
+      "summary": "The individual is experiencing a notable level of stress, likely due to an overwhelming workload. Other factors such as depression, anxiety, and loneliness are not significantly present.",
       "confidence": 0.85
     }
   },
@@ -39,11 +39,9 @@
     "id": 4,
     "text": "身边有很多人，但我感觉没有一个人真正理解我。",
     "final_output": {
-      "overall_risk_level": "medium",
-      "dominant_factors": [
-        "loneliness"
-      ],
-      "summary": "The individual is experiencing a notable sense of loneliness, despite being surrounded by people. This suggests a lack of meaningful connection or understanding from others.",
+      "overall_risk_level": "none",
+      "dominant_factors": [],
+      "summary": "There are no significant risk factors identified for depression, anxiety, stress, or loneliness.",
       "confidence": 0.8
     }
   },
@@ -56,8 +54,8 @@
         "depression",
         "loneliness"
       ],
-      "summary": "存在中等程度的心理风险，主要表现为抑郁和孤独感。",
-      "confidence": 0.85
+      "summary": "存在中等程度的心理风险，主要因素为抑郁和孤独感。",
+      "confidence": 0.8
     }
   },
   {
@@ -69,7 +67,7 @@
         "stress",
         "loneliness"
       ],
-      "summary": "The individual is experiencing a medium level of psychological risk, primarily due to stress and loneliness. They feel overwhelmed by the number of tasks they have to handle and lack a support system to share their feelings with.",
+      "summary": "The individual is experiencing a medium level of psychological risk, primarily due to stress and loneliness. They feel overwhelmed by daily tasks and lack social support.",
       "confidence": 0.85
     }
   },
@@ -82,8 +80,8 @@
         "depression",
         "anxiety"
       ],
-      "summary": "存在中等程度的抑郁和焦虑风险，建议关注情绪变化。",
-      "confidence": 0.85
+      "summary": "存在中等程度的心理风险，主要由抑郁和焦虑因素驱动。",
+      "confidence": 0.8
     }
   },
   {
@@ -95,7 +93,7 @@
         "stress",
         "loneliness"
       ],
-      "summary": "用户报告了较高的压力水平和孤独感，这表明存在中等程度的心理风险。",
+      "summary": "The individual is experiencing a medium level of psychological risk, primarily due to stress and feelings of loneliness, especially during solitary evenings.",
       "confidence": 0.8
     }
   },
@@ -107,18 +105,20 @@
       "dominant_factors": [
         "loneliness"
       ],
-      "summary": "存在轻微的孤独感，但总体心理健康风险较低。",
-      "confidence": 0.8
+      "summary": "用户报告感到心里空落落的，这可能指向轻度的孤独感。其他心理健康因素未见明显风险。",
+      "confidence": 0.75
     }
   },
   {
     "id": 10,
     "text": "我不确定是不是哪里出了问题，但最近情绪一直很低落。",
     "final_output": {
-      "overall_risk_level": "none",
-      "dominant_factors": [],
-      "summary": "没有明显的心理风险因素。",
-      "confidence": 0.8
+      "overall_risk_level": "medium",
+      "dominant_factors": [
+        "depression"
+      ],
+      "summary": "用户表现出中等程度的抑郁情绪，其他方面没有明显风险。",
+      "confidence": 0.85
     }
   }
 ]
