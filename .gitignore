@@ -1,28 +1,31 @@
 # Python cache
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
 
 # Environment / secrets
 .env
 *.key
+.env.local
 
-# VS Code
+# VS Code / IDE
 .vscode/
+.idea/
 
 # OS
 .DS_Store
+Thumbs.db
 
-.env
-
-# frontend
-frontend/node_modules
-frontend/dist
-
-# environment
-.env
-
-# Frontend dependencies
+# Frontend dependencies (if any)
+node_modules/
 frontend/node_modules/
-
-# Vite cache
+frontend/dist/
 frontend/.vite/
+frontend-react-archive/
+
+# Build outputs
+dist/
+build/
+*.log
