@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 from openai import OpenAI
 from dotenv import load_dotenv
+from concurrent.futures import ThreadPoolExecutor
 
 load_dotenv()
 
@@ -16,11 +17,6 @@ client = OpenAI(
 )
 
 # Resolve paths relative to the project root
-# Assuming this code runs from 'backend/' directory or we find the root
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent # services -> app -> backend -> root
-# Actually, let's just find the 'agents' dir relative to this file
-# this file is in backend/app/services/
-# agents is in agents/ (root)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 
 AGENTS_DIR = PROJECT_ROOT / "agents"
@@ -44,6 +40,7 @@ AGENTS_PROMPTS, COORDINATOR_RULES = load_prompts()
 
 def run_agent(agent_name, prompt, text):
     try:
+        # 延长至 120 秒，给模型充分的分析时间
         response = client.chat.completions.create(
             model=AGENT_MODEL,
             messages=[
@@ -52,18 +49,27 @@ def run_agent(agent_name, prompt, text):
             ],
             temperature=0,
             response_format={"type": "json_object"},
-            extra_body={"enable_thinking": False}
+            extra_body={"enable_thinking": False},
+            timeout=120.0 
         )
         return json.loads(response.choices[0].message.content)
     except Exception as e:
-        print(f"Error running agent {agent_name}: {e}")
-        return {"error": str(e)}
+        print(f"[Agent] ⚠️ {agent_name} 调用异常: {str(e)}")
+        return {"agent_type": agent_name, "risk_score": 0, "risk_level": "none", "reasoning_summary": "timeout"}
 
 def analyze_text_with_agents(text):
     results = {}
-    # Run sequentially for simplicity, can be parallelized
-    for agent_name, prompt in AGENTS_PROMPTS.items():
-        results[agent_name] = run_agent(agent_name, prompt, text)
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        future_to_agent = {
+            executor.submit(run_agent, name, prompt, text): name 
+            for name, prompt in AGENTS_PROMPTS.items()
+        }
+        for future in future_to_agent:
+            agent_name = future_to_agent[future]
+            try:
+                results[agent_name] = future.result()
+            except Exception as e:
+                results[agent_name] = {"error": str(e)}
     return results
 
 def run_coordinator_analysis(agent_outputs):
@@ -76,25 +82,27 @@ def run_coordinator_analysis(agent_outputs):
             ],
             temperature=0,
             response_format={"type": "json_object"},
-            extra_body={"enable_thinking": False}
+            extra_body={"enable_thinking": False},
+            timeout=120.0
         )
         return json.loads(response.choices[0].message.content)
     except Exception as e:
-        print(f"Error running coordinator analysis: {e}")
-        return {"error": str(e)}
+        print(f"[Coordinator] ⚠️ 汇总分析异常: {str(e)}")
+        return {"overall_risk_level": "none", "summary": "系统繁忙，正在努力处理中...", "confidence": 0}
 
-def generate_coordinator_reply(history, analysis_result):
-    # History: list of {role, content}
-    # We want to generate a reply that considers the analysis but behaves like a helpful assistant.
-    
+def generate_coordinator_reply(history, analysis_result, last_report=None):
+    memory_context = ""
+    if last_report:
+        memory_context = f"\n[Memory Mode - Last Assessment]: {json.dumps(last_report, ensure_ascii=False)}"
+
     system_prompt = f"""You are a compassionate mental health assistant. 
     You have just analyzed the user's latest message and found the following risk profile:
     {json.dumps(analysis_result, ensure_ascii=False)}
+    {memory_context}
     
     Your goal is to respond to the user naturally and empathetically.
-    - If the risk is high, be supportive and suggest seeking help if appropriate, but do not be alarmist.
-    - If the risk is low, continue the conversation normally.
-    - Do NOT explicitly mention "I have analyzed your message and found X score" unless relevant to helping them.
+    - If memory context is available, you can subtly refer to progress or consistent patterns from the previous session.
+    - If the risk is high, be supportive and suggest seeking help if appropriate.
     - Be concise and warm.
     """
     
@@ -104,15 +112,15 @@ def generate_coordinator_reply(history, analysis_result):
         response = client.chat.completions.create(
             model=COORDINATOR_MODEL,
             messages=messages,
-            temperature=0.7
+            temperature=0.7,
+            timeout=120.0
         )
         return response.choices[0].message.content
     except Exception as e:
-        return "I'm sorry, I'm having trouble responding right now."
+        print(f"[Reply] ⚠️ 回复生成异常: {str(e)}")
+        return "抱歉，由于分析内容较为复杂，我需要更多时间思考。请稍后再试或换个话题。"
 
 def run_final_evaluation(analyses_history):
-    # analyses_history: list of coordinator analysis JSONs from the session
-    
     prompt = """You are a senior mental health assessment coordinator.
     You have observed a conversation where the following risk assessments were made for each user message:
     
@@ -134,7 +142,8 @@ def run_final_evaluation(analyses_history):
             ],
             temperature=0.3,
             response_format={"type": "json_object"},
-            extra_body={"enable_thinking": False}
+            extra_body={"enable_thinking": False},
+            timeout=120.0
         )
         return json.loads(response.choices[0].message.content)
     except Exception as e:

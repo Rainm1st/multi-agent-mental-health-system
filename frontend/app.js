@@ -1,6 +1,7 @@
 // Configuration
-const API_BASE_URL = "http://127.0.0.1:8000";
-let sessionId = "session_" + Math.random().toString(36).substr(2, 9);
+//const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "http://43.143.78.197:8000";
+let currentUser = { id: "", name: "" };
 let conversationHistory = [];
 
 // DOM Elements
@@ -10,6 +11,48 @@ const sendBtn = document.getElementById("sendBtn");
 const endBtn = document.getElementById("endBtn");
 const reportModal = document.getElementById("reportModal");
 const reportContent = document.getElementById("reportContent");
+const loginOverlay = document.getElementById("loginOverlay");
+
+// Login Logic
+async function handleLogin() {
+    const idInput = document.getElementById("loginId");
+    const passwordInput = document.getElementById("loginPassword");
+    const id = idInput.value.trim();
+    const password = passwordInput.value.trim();
+    
+    if (!id || !password) {
+        alert("请输入 ID 和密码。");
+        return;
+    }
+
+    try {
+        console.log("正在尝试登录, URL:", `${API_BASE_URL}/login`);
+        const resp = await fetch(`${API_BASE_URL}/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: id, password: password })
+        });
+        
+        if (!resp.ok) {
+            const errText = await resp.text();
+            throw new Error(`服务器响应错误: ${resp.status} - ${errText}`);
+        }
+
+        const data = await resp.json();
+        
+        if (data.valid) {
+            currentUser = { id: id, name: data.username };
+            loginOverlay.classList.add("hidden");
+            const isMemory = document.getElementById("memoryModeToggle").checked;
+            addMessage("Assistant", `欢迎回来，${data.username}。记忆模式已${isMemory ? "开启" : "关闭"}。`);
+        } else {
+            alert(data.message || "登录失败，请检查 ID 或密码。");
+        }
+    } catch (error) {
+        console.error("登录异常:", error);
+        alert(`登录连接失败！\n\n详细原因: ${error.message}\n\n请检查 API 地址是否为: ${API_BASE_URL}`);
+    }
+}
 
 // Auto-resize textarea
 function autoResize(el) {
@@ -68,15 +111,40 @@ async function sendMessage() {
   // Show loading
   addMessage("Assistant", "", true);
 
+  // 温馨提示计时器：15秒后如果还没回话，显示一条安抚信息
+  const warmPromptTimer = setTimeout(() => {
+    const loadingMsg = document.getElementById("loadingMessage");
+    if (loadingMsg) {
+      const warmText = document.createElement("div");
+      warmText.className = "message-wrapper assistant";
+      warmText.id = "warmPrompt";
+      warmText.innerHTML = `
+        <div class="message-role">助手</div>
+        <div class="message-bubble" style="background-color: #fffbeb; color: #92400e; border: 1px solid #fde68a;">
+          思考的内容比较深刻，我正在努力整理思绪，请再稍等我片刻...
+        </div>
+      `;
+      chatContainer.appendChild(warmText);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  }, 15000);
+
   try {
+    const isMemory = document.getElementById("memoryModeToggle").checked;
     const resp = await fetch(`${API_BASE_URL}/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ 
         history: conversationHistory,
-        session_id: sessionId 
+        user_id: currentUser.id,
+        memory_mode: isMemory
       })
     });
+
+    // 清除计时器和安抚信息
+    clearTimeout(warmPromptTimer);
+    const warmPrompt = document.getElementById("warmPrompt");
+    if (warmPrompt) warmPrompt.remove();
 
     if (!resp.ok) throw new Error("Server error");
 
@@ -112,7 +180,7 @@ async function endConversation() {
     const resp = await fetch(`${API_BASE_URL}/end`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ session_id: sessionId })
+      body: JSON.stringify({ user_id: currentUser.id })
     });
 
     const result = await resp.json();
@@ -189,7 +257,6 @@ function closeReport() {
 function restartChat() {
     // Reset local state
     conversationHistory = [];
-    sessionId = "session_" + Math.random().toString(36).substr(2, 9);
     
     // Clear UI
     chatContainer.innerHTML = `
@@ -201,7 +268,7 @@ function restartChat() {
     
     closeReport();
     
-    // Optional: Call backend to clear old session if needed, strictly not required since we changed session ID
+    // Optional: Call backend to clear old session if needed
 }
 
 // Event Listeners
